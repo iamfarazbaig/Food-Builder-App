@@ -5,12 +5,9 @@ import {Header, Divider} from 'semantic-ui-react'
 class App extends Component {
   render() {
     return (
-      <div>
         <Layout>
-        <Header as='h3'><FoodBuilder/></Header> 
-        <Divider section /> 
+          <FoodBuilder />
         </Layout>
-      </div>
     );
   }
 }
