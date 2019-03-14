@@ -1,6 +1,7 @@
 import React from 'react'
 import cssClasses from './BuildControls.module.css'
 import SingleBuildControl from './SingleBuildControl/SingleBuildControl'
+import { Button } from 'semantic-ui-react';
 
 const controls = [
     { label : 'Lettuce', type :'lettuce'},
@@ -11,6 +12,7 @@ const controls = [
 
 const buildControls = (props) => (
     <div className={cssClasses.BuildControls}>
+    <p>Total Cost: {"\u20ac"} {props.price}</p>
     {controls.map(control =>(
         <SingleBuildControl 
             key = {control.label} //controls is accessed by map and each element of this array into a SingleBuildControl tag with key and label
@@ -18,6 +20,7 @@ const buildControls = (props) => (
             added = {() => props.newIngredientAdded(control.type)}
             removed = {() => props.ingredientRemoved(control.type)} /> //newIngredientAdded is from FoodBuilder.js. control.type is passed back to newIngredientAdded. added is connected to Add button
     ))} 
+    <Button disabled = {!props.canPurchase}>Order Now</Button>
     </div>
 )
 
