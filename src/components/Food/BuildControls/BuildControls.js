@@ -7,7 +7,7 @@ const controls = [
     { label : 'Lettuce', type :'lettuce'},
     { label : 'Cheese', type :'cheese'},
     { label : 'Chilli', type :'chilli'},
-    { label : 'Patty', type :'thePatty'}//the type should match foodIngredient component
+    { label : 'Patty', type :'Patty'}//the type should match foodIngredient component
 ]
 
 const buildControls = (props) => (
@@ -20,7 +20,9 @@ const buildControls = (props) => (
             added = {() => props.newIngredientAdded(control.type)}
             removed = {() => props.ingredientRemoved(control.type)} /> //newIngredientAdded is from FoodBuilder.js. control.type is passed back to newIngredientAdded. added is connected to Add button
     ))} 
-    <Button disabled = {!props.canPurchase}>Order Now</Button>
+    <Button 
+    disabled = {!props.canPurchase}
+    onClick = {props.myOrder}>Order Now</Button>
     </div>
 )
 

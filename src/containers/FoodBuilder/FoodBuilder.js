@@ -1,12 +1,14 @@
 import React, {Component, Fragment} from 'react'
 import Food from '../../components/Food/Food'
 import BuildControls from '../../components/Food/BuildControls/BuildControls'
+import OPage from '../../components/UI/OPage/OPage'
+import OrderSummary from '../../components/Food/OrderSummary/OrderSummary'
 
 const INGREDIENT_PRICES = { //Global const for prices
         lettuce: 1,
         cheese:  2,
         chilli:  0.5,
-        thePatty:3
+        Patty:3
 }
 
 class FoodBuilder extends Component {
@@ -15,10 +17,11 @@ class FoodBuilder extends Component {
             lettuce: 0,
             cheese:  0,
             chilli:  0,
-            thePatty:0
+            Patty:0
         },
-        totalPrice: 0,//base price is 5
-        canPurchase : false
+        totalPrice: 0,//base price is 0
+        canPurchase : false,
+        purchaseMode : false
     }
 
     purchaseState (ingredients) {
@@ -59,15 +62,22 @@ class FoodBuilder extends Component {
         this.purchaseState(updatedIngredient);
         }
 
+        purchaseHandler = () => {
+            this.setState({purchaseMode : true})
+        } 
 
     render () {
         return (
             <Fragment>
+                <OPage show ={this.state.purchaseMode}>
+                    <OrderSummary ingredients = {this.state.ingredients} />
+                </OPage>
                 <Food ingredients={this.state.ingredients}/>{/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
                 <BuildControls
                     newIngredientAdded = {this.addIngredients}  //Add or remove ingredients 
                     ingredientRemoved = {this.removeIngredients}
                     canPurchase = {this.state.canPurchase}
+                    myOrder = {this.purchaseHandler}
                     price = {this.state.totalPrice} /> 
             </Fragment>
         )
