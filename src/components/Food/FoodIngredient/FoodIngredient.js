@@ -14,7 +14,7 @@ class FoodIngredient extends Component {
                 <div className={cssClasses.Seeds2}></div>
                 </div>)
                 break
-            case('burgerPatty'):
+            case('thePatty'):
                 ingredient=<div className={cssClasses.Patty}></div>
                 break
             case('cheese'):

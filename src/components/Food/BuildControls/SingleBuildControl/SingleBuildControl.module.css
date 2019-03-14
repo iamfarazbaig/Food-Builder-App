@@ -1,0 +1,16 @@
+.SingleBuildControl {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.Label {
+    padding: 30%;
+    font-weight: bold;
+    width: 80px;
+}
+
+.AddButtonStyling {
+    width: 95px;
+}
