@@ -6,9 +6,9 @@ const singleBuildControl = (props) => (
     <div className={cssClasses.SingleBuildControl}>
         <div>{props.label}<br/></div>
         <Button.Group size='large'>
-            <Button className={cssClasses.AddButtonStyling}>Add</Button>
+            <Button className={cssClasses.AddButtonStyling} onClick ={props.added} >Add</Button>
             <Button.Or />
-            <Button>Remove</Button>
+            <Button onClick ={props.removed}>Remove</Button>
         </Button.Group>
     </div>
 )
