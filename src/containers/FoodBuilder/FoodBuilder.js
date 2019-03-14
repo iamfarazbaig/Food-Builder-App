@@ -62,15 +62,27 @@ class FoodBuilder extends Component {
         this.purchaseState(updatedIngredient);
         }
 
-        purchaseHandler = () => {
-            this.setState({purchaseMode : true})
-        } 
+    purchaseHandler = () => {
+        this.setState({purchaseMode : true})
+    } 
+
+    cancelPurchaseHandler= () => { //to remove order summary box
+        this.setState({purchaseMode : false})
+    } 
+
+    continuePurchaseHandler = () => {
+        alert('Continue please')
+    }
 
     render () {
         return (
             <Fragment>
-                <OPage show ={this.state.purchaseMode}>
-                    <OrderSummary ingredients = {this.state.ingredients} />
+                <OPage show ={this.state.purchaseMode} closeOPage={this.cancelPurchaseHandler}>
+                    <OrderSummary 
+                    ingredients = {this.state.ingredients}
+                    purchaseCancelEvent = {this.cancelPurchaseHandler} 
+                    purchaseContinueEvent = {this.continuePurchaseHandler}
+                    cost ={this.state.totalPrice}/>
                 </OPage>
                 <Food ingredients={this.state.ingredients}/>{/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
                 <BuildControls

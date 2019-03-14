@@ -1,7 +1,7 @@
 import React from "react";
 import cssClasses from './Backdrop.module.css'
-const backdrop = (props) => (
-    props.show ? <div className={cssClasses.backdrop}></div> : null //ternary exp if prop.show is true then return div else
+const backdrop = (props) => ( 
+    props.show ? <div className={cssClasses.Backdrop} onClick={props.clicked}></div> : null //ternary exp if prop.show is true then return div else
 )
 
 export default backdrop

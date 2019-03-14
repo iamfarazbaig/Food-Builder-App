@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import { bold } from 'ansi-colors';
-import { Card } from 'semantic-ui-react'
+import Button from '../../UI/Button/Button'
 
 const orderSummary = (props) => {
     const summaryIngredient = Object.keys(props.ingredients) //same as before, transforming to array
@@ -19,7 +19,11 @@ const orderSummary = (props) => {
             <ul>
                 {summaryIngredient}
             </ul>
-            <p>Continue to Checkout</p>
+            <p><strong>Order Cost: {"\u20ac"} {props.cost}</strong></p>
+            <p>Continue to Checkout?</p>
+            <Button buttonType="Negative" clicked={props.purchaseCancelEvent}>Cancel</Button> {/*custom buttons */}
+            <Button buttonType="Positive" clicked={props.purchaseContinueEvent}>Continue</Button>
+
         </Fragment>
     )
 }
