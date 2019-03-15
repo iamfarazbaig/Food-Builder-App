@@ -15,3 +15,9 @@
 .Toolbar nav{  /* to show how nav items are displayed in toolbar */
     height: 100%;
 }
+
+@media (max-width: 499px) {
+    .DesktopOnly {
+        display: none
+    }
+}

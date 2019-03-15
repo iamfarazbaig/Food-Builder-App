@@ -1,13 +1,33 @@
-import React, {Fragment} from 'react'
-import { Divider, Header} from 'semantic-ui-react'
+import React, {Component,Fragment} from 'react'
 import Toolbar from '../Navbar/Toolbar/Toolbar'
-const layout =(props) => (
-    <Fragment>
-        <Toolbar />
-        <main>
-            {props.children}
-        </main>
-    </Fragment>
-)
+import SideDrawer from '../Navbar/SideDrawer/SideDrawer'
 
-export default layout
+class Layout extends Component {
+    state = {
+        showSideDrawer : true
+    }
+    closeSideDrawer = () => {
+        this.setState({showSideDrawer: false})
+    }
+
+    SideDrawerToggler = () => {
+        this.setState((prevState) => {
+            return {showSideDrawer: !prevState.showSideDrawer}
+        }) //to toggle displaying state of side drawer.as setState is async itll have unexpected outcomes so function form is used
+    }
+
+    render () {
+        return (
+            <Fragment>
+                <Toolbar drawerToggleOnClick ={this.SideDrawerToggler}/>
+                <SideDrawer 
+                    display={this.state.showSideDrawer}
+                    closed={this.closeSideDrawer}/>
+                <main>
+                    {this.props.children}
+                </main>
+            </Fragment>
+        )
+    }
+}
+export default Layout
