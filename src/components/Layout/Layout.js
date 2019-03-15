@@ -1,12 +1,9 @@
 import React, {Fragment} from 'react'
 import { Divider, Header} from 'semantic-ui-react'
-
+import Toolbar from '../Navbar/Toolbar/Toolbar'
 const layout =(props) => (
     <Fragment>
-        <div>
-        <Header as='h3'> Toolbar, Sidedrawer, Backdrop</Header>
-    <Divider section />
-        </div>
+        <Toolbar />
         <main>
             {props.children}
         </main>

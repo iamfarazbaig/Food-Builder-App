@@ -1,0 +1,17 @@
+.Toolbar {
+    box-sizing: border-box;
+    height: 7%;
+    width: 100%;
+    position: fixed;  /* to keep toolbar at fixed position */
+    top: 0;  /* to keep it at top left corner */
+    left: 0;
+    background-color: brown;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 90;
+}
+
+.Toolbar nav{  /* to show how nav items are displayed in toolbar */
+    height: 100%;
+}
