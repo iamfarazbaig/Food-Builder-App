@@ -3,7 +3,8 @@ import Food from '../../components/Food/Food'
 import BuildControls from '../../components/Food/BuildControls/BuildControls'
 import OPage from '../../components/UI/OPage/OPage'
 import OrderSummary from '../../components/Food/OrderSummary/OrderSummary'
-
+import axios from '../../axios-orders'
+import Spinner from '../../components/UI/Spinner/Spinner'
 const INGREDIENT_PRICES = { //Global const for prices
         lettuce: 1,
         cheese:  2,
@@ -21,7 +22,8 @@ class FoodBuilder extends Component {
         },
         totalPrice: 0,//base price is 0
         canPurchase : false,
-        purchaseMode : false
+        purchaseMode : false,
+        loading: false
     }
 
     purchaseState (ingredients) {
@@ -71,18 +73,44 @@ class FoodBuilder extends Component {
     } 
 
     continuePurchaseHandler = () => {
-        alert('Continue please')
+        // alert('Continue please')
+        this.setState({loading: true})
+        const order = {
+            ingredients: this.state.ingredients,
+            price : this.state.totalPrice,
+            customer : {
+                name : 'Random person',
+                address : {
+                    street: 'random street',
+                    county:'waterford'
+                },
+                email:'test@test.com'
+            },
+            deliveryMethod: 'fast'
+        }
+        axios.post('/orders.json', order)
+             .then(response => {
+                 this.setState({loading: false, purchaseMode: false})
+             })
+             .catch(error => {
+                this.setState({loading: false, purchaseMode: false})
+            })
     }
 
     render () {
+        let orderSummary = <OrderSummary 
+        ingredients = {this.state.ingredients}
+        purchaseCancelEvent = {this.cancelPurchaseHandler} 
+        purchaseContinueEvent = {this.continuePurchaseHandler}
+        cost ={this.state.totalPrice}/>
+
+        if(this.state.loading) {
+            orderSummary = <Spinner />
+        }
         return (
             <Fragment>
                 <OPage show ={this.state.purchaseMode} closeOPage={this.cancelPurchaseHandler}>
-                    <OrderSummary 
-                    ingredients = {this.state.ingredients}
-                    purchaseCancelEvent = {this.cancelPurchaseHandler} 
-                    purchaseContinueEvent = {this.continuePurchaseHandler}
-                    cost ={this.state.totalPrice}/>
+                   {orderSummary}
                 </OPage>
                 <Food ingredients={this.state.ingredients}/>{/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
                 <BuildControls

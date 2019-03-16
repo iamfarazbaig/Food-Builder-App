@@ -4,8 +4,8 @@ import Backdrop from '../Backdrop/Backdrop'
 
 class Opage extends Component {
 
-    shouldComponentUpdate(nextProps, nextState) { // converted to class based component and added shouldComponentUpdate to eliminate unnecessary updates
-        return nextProps.show !== this.props.show;
+    shouldComponentUpdate(nextProps, nextState) { // converted to class based component and added shouldComponentUpdate to eliminate unnecessary updates.added extra OR term so that it can update for new children
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
     }
 
     componentDidUpdate () {
