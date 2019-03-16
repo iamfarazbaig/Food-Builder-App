@@ -6,7 +6,7 @@ const withErrorHandling = (WrappedComponent, axios) => { //setting a global erro
             error:null
         }
         
-        componentDidMount() {
+        componentWillMount() {
             axios.interceptors.request.use(req => { //calling this.setState and clear any error so when a request is sent, the error is not set up 
                 this.setState({error:null})
                 return req;//as we send req, we've to return it.when sending req, we have to return the request config so that the request can continue

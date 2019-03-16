@@ -15,16 +15,22 @@ const INGREDIENT_PRICES = { //Global const for prices
 
 class FoodBuilder extends Component {
     state= {
-        ingredients: { //key value pairs key:ingredients, value:amount
-            lettuce: 0,
-            cheese:  0,
-            chilli:  0,
-            Patty:0
-        },
+        ingredients: null, //key value pairs key:ingredients, value:amount,
         totalPrice: 0,//base price is 0
         canPurchase : false,
         purchaseMode : false,
-        loading: false
+        loading: false,
+        error: false
+    }
+
+    componentDidMount () {
+        axios.get('https://assignment1-fb.firebaseio.com/ingredients.json')
+        .then(response => {
+            this.setState({ingredients: response.data})
+        })
+        .catch(error => {
+            this.setState({error: true});
+        });
     }
 
     purchaseState (ingredients) {
@@ -99,27 +105,35 @@ class FoodBuilder extends Component {
     }
 
     render () {
-        let orderSummary = <OrderSummary 
-        ingredients = {this.state.ingredients}
-        purchaseCancelEvent = {this.cancelPurchaseHandler} 
-        purchaseContinueEvent = {this.continuePurchaseHandler}
-        cost ={this.state.totalPrice}/>
-
-        if(this.state.loading) {
+        let orderSummary = null;
+        let food = this.state.error ? <p>Something went wrong!</p> : <Spinner />
+        if(this.state.ingredients) { //we do this to avoid failing of build controls
+            food = (
+                <Fragment>
+                    <Food ingredients={this.state.ingredients}/> {/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
+                    <BuildControls
+                        newIngredientAdded = {this.addIngredients}  //Add or remove ingredients 
+                        ingredientRemoved = {this.removeIngredients}
+                        canPurchase = {this.state.canPurchase}
+                        myOrder = {this.purchaseHandler}
+                        price = {this.state.totalPrice} />
+                </Fragment>) 
+                orderSummary = <OrderSummary //we are overriding order summary in the same if statement
+                    ingredients = {this.state.ingredients}
+                    purchaseCancelEvent = {this.cancelPurchaseHandler} 
+                    purchaseContinueEvent = {this.continuePurchaseHandler}
+                    cost ={this.state.totalPrice}/>
+        }
+        if(this.state.loading) { //overriding if loading was set(to overrride summary if needed)
             orderSummary = <Spinner />
         }
+       
         return (
             <Fragment>
                 <OPage show ={this.state.purchaseMode} closeOPage={this.cancelPurchaseHandler}>
                    {orderSummary}
                 </OPage>
-                <Food ingredients={this.state.ingredients}/>{/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
-                <BuildControls
-                    newIngredientAdded = {this.addIngredients}  //Add or remove ingredients 
-                    ingredientRemoved = {this.removeIngredients}
-                    canPurchase = {this.state.canPurchase}
-                    myOrder = {this.purchaseHandler}
-                    price = {this.state.totalPrice} /> 
+                {food}
             </Fragment>
         )
     }
