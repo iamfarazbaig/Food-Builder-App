@@ -5,6 +5,7 @@ import OPage from '../../components/UI/OPage/OPage'
 import OrderSummary from '../../components/Food/OrderSummary/OrderSummary'
 import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import withErrorHandling from '../../hoc/withErrorHandling/withErrorhandling'
 const INGREDIENT_PRICES = { //Global const for prices
         lettuce: 1,
         cheese:  2,
@@ -124,4 +125,4 @@ class FoodBuilder extends Component {
     }
 }
 
-export default FoodBuilder
+export default withErrorHandling(FoodBuilder, axios)
