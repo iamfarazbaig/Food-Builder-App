@@ -9,7 +9,7 @@ class App extends Component {
         <Layout>
           <Switch>
             <Route path="/checkout" component={Checkout} />
-            <Route path="/" component={FoodBuilder} />
+            <Route path="/" exact component={FoodBuilder} />
           </Switch>
         </Layout>
     );
