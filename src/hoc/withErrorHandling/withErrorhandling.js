@@ -7,13 +7,18 @@ const withErrorHandling = (WrappedComponent, axios) => { //setting a global erro
         }
         
         componentWillMount() {
-            axios.interceptors.request.use(req => { //calling this.setState and clear any error so when a request is sent, the error is not set up 
+            this.requestInterceptor = axios.interceptors.request.use(req => { //calling this.setState and clear any error so when a request is sent, the error is not set up 
                 this.setState({error:null})
                 return req;//as we send req, we've to return it.when sending req, we have to return the request config so that the request can continue
             })
-            axios.interceptors.response.use(res=>res, error => {//global interceptors allow to handle error.for response handler here,its simply return the response.2nd arg is error case where we get an error
+            this.responseInterceptors = axios.interceptors.response.use(res=>res, error => {//global interceptors allow to handle error.for response handler here,its simply return the response.2nd arg is error case where we get an error
                 this.setState({error:error})
             }) 
+        }
+
+        componentWillUnmount() { //we need to remove interceptors after executions else it cause memory leak and maybe errors
+            axios.interceptors.request.eject(this.requestInterceptor)
+            axios.interceptors.response.eject(this.responseInterceptors)
         }
 
         errorConfirmHandler = () => {
