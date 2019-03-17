@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import CheckoutComponent from '../../components/Orders/CheckoutComponent/CheckoutComponent'
+import CheckoutComponent from '../../components/Order/CheckoutComponent/CheckoutComponent'
 import {Route} from 'react-router-dom'
 import ContactDetails from './ContactDetails/ContactDetails'
 class Checkout extends Component {
