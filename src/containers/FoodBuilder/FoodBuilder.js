@@ -81,31 +81,12 @@ class FoodBuilder extends Component {
 
     continuePurchaseHandler = () => {
         // alert('Continue please')
-        // this.setState({loading: true})
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price : this.state.totalPrice,
-        //     customer : {
-        //         name : 'Random person',
-        //         address : {
-        //             street: 'random street',
-        //             county:'waterford'
-        //         },
-        //         email:'test@test.com'
-        //     },
-        //     deliveryMethod: 'fast'
-        // }
-        // axios.post('/orders.json', order)
-        //      .then(response => {
-        //          this.setState({loading: false, purchaseMode: false})
-        //      })
-        //      .catch(error => {
-        //         this.setState({loading: false, purchaseMode: false})
-        //     })
+       
         const queryParameters = []
         for(let i in this.state.ingredients) {
             queryParameters.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))//encodes elements such that it can be used in url. i is the key/property name in the ingredients.here, we set the property name '=' value for that property name
         }
+        queryParameters.push('price= ' + this.state.totalPrice)//to pass this to the query parameter for the totalprice in the contact details orderHandler
 
         const queryString = queryParameters.join('&')
 
