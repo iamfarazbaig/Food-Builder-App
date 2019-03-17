@@ -1,7 +1,8 @@
 .Toolbar {
     box-sizing: border-box;
-    height: 7%;
+    height: 56px;
     width: 100%;
+    padding: 0 20px;
     position: fixed;  /* to keep toolbar at fixed position */
     top: 0;  /* to keep it at top left corner */
     left: 0;
@@ -16,8 +17,14 @@
     height: 100%;
 }
 
+.Logo {
+    height: 80%;
+}
+
 @media (max-width: 499px) {
     .DesktopOnly {
         display: none
     }
 }
+
+

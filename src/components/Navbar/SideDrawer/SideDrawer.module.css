@@ -1,6 +1,7 @@
 .SideDrawer {
     box-sizing: border-box;
     position: fixed;
+    transition: transform 0.3s ease-in;
     z-index: 200;
     left: 0;
     top: 0;

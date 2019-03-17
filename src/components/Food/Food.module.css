@@ -2,16 +2,15 @@
     box-sizing: border-box;
     width: 100%;
     text-align: center;
-    margin-left: 38%;
-    padding-top: 4%;
-    padding-bottom: 2%;
+    margin: auto;
+    padding: 5% 1% 1% 1%;
+    height: 250px;
 }
 
 @media (min-width: 1000px) and (min-height: 700px) {
     .Food{
         width: 700px;
-        height:650px;
-
+        height:600px;
     }
 }
 
@@ -22,10 +21,9 @@
     }
 }
 
-/* @media (min-width: 400px) and (min-height: 400px) {
-    .Food{
-        width: 200px;
-        height:200px;
+@media (min-width: 500px) and (min-height: 401px) {
+    .Food {
+        width: 450px;
+        height: 400px;
     }
-} */
-
+}
