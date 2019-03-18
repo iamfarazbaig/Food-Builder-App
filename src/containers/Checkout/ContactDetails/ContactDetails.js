@@ -4,6 +4,8 @@ import cssClasses from './ContactDetails.module.css'
 import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Inputform from '../../../components/UI/Inputform/Inputform'
+import {connect} from 'react-redux'
+import { stat } from 'fs';
 
 class ContactDetails extends Component {
     state = {
@@ -83,7 +85,7 @@ class ContactDetails extends Component {
             formData[formElements] = this.state.orderForm[formElements].value// we set the value of the property to the value user entered
         }
             const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ingres,
             price : this.props.price,
             orderFormData : formData
         }
@@ -113,7 +115,7 @@ class ContactDetails extends Component {
         }
 
         if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //regex code for checking email
             isValid = pattern.test(value) && isValid
         }
 
@@ -170,4 +172,11 @@ class ContactDetails extends Component {
 
 }
 
-export default ContactDetails
+const mappedStateToProps =state => {
+    return {
+        ingres: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(mappedStateToProps)(ContactDetails)

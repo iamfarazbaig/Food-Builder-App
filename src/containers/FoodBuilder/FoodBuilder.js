@@ -6,70 +6,35 @@ import OrderSummary from '../../components/Food/OrderSummary/OrderSummary'
 import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandling from '../../hoc/withErrorHandling/withErrorhandling'
-const INGREDIENT_PRICES = { //Global const for prices
-        lettuce: 1,
-        cheese:  2,
-        chilli:  0.5,
-        Patty:3
-}
+import {connect} from 'react-redux'
+import * as actionTypes from '../../store/actions'
+
 
 class FoodBuilder extends Component {
-    state= {
-        ingredients: null, //key value pairs key:ingredients, value:amount,
-        totalPrice: 0,//base price is 0
-        canPurchase : false,
+    state= { // states for UI only. not necessarily need to manage by redux store
         purchaseMode : false,
         loading: false,
         error: false
     }
 
     componentDidMount () {
-        axios.get('https://assignment1-fb.firebaseio.com/ingredients.json')
-        .then(response => {
-            this.setState({ingredients: response.data})
-        })
-        .catch(error => {
-            this.setState({error: true});
-        });
+        // axios.get('https://assignment1-fb.firebaseio.com/ingredients.json')
+        // .then(response => {
+        //     this.setState({ingredients: response.data})
+        // })
+        // .catch(error => {
+        //     this.setState({error: true});
+        // });
     }
 
-    purchaseState (ingredients) {
-         const sum = Object.keys(ingredients) //creating an array of string entities 
+    purchaseState (ingredients) { //logic for when to update purchase state
+        const sum = Object.keys(ingredients) //creating an array of string entities 
                 .map(iKey => { return ingredients[iKey]}) //using map to replace old value of ingredient with new ones by iKey. we are getting the numbers for ingredients
                 .reduce((sum, el) => {
                     return sum + el;
                 }, 0)// to return sum of all ingredients, keeping initialValue = 0 and el is the value accessed from ingredients[iKey]
-        this.setState({canPurchase : sum > 0})
+        return sum > 0
             }
-
-    addIngredients = (type) => {
-        const prevCount = this.state.ingredients[type]//to add ingredient we need to know previous ingredient count
-        const updatedCount = prevCount + 1
-        const updatedIngredient = {...this.state.ingredients}//to update state in immutable way spread operator is used 
-        updatedIngredient[type] = updatedCount
-
-        const sumOfPrice = INGREDIENT_PRICES[type]
-        const prevPrice = this.state.totalPrice
-        const updatedPrice = prevPrice + sumOfPrice
-        this.setState({totalPrice: updatedPrice, ingredients: updatedIngredient})
-        this.purchaseState(updatedIngredient); //pass updatedIngredient to purchaseState for updated values
-    }
-
-    removeIngredients = (type) => {
-        const prevCount = this.state.ingredients[type]
-        if(prevCount <= 0) { //to avoid error if count goes less than 0 as array cant return negative value
-            return 
-        }
-        const updatedCount = prevCount - 1
-        const updatedIngredient = {...this.state.ingredients}
-        updatedIngredient[type] = updatedCount
-
-        const DeductionOfPrice = INGREDIENT_PRICES[type]
-        const prevPrice = this.state.totalPrice
-        const updatedPrice = prevPrice - DeductionOfPrice
-        this.setState({totalPrice: updatedPrice, ingredients: updatedIngredient})
-        this.purchaseState(updatedIngredient);
-        }
 
     purchaseHandler = () => {
         this.setState({purchaseMode : true})
@@ -79,42 +44,29 @@ class FoodBuilder extends Component {
         this.setState({purchaseMode : false})
     } 
 
-    continuePurchaseHandler = () => {
-        // alert('Continue please')
-       
-        const queryParameters = []
-        for(let i in this.state.ingredients) {
-            queryParameters.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))//encodes elements such that it can be used in url. i is the key/property name in the ingredients.here, we set the property name '=' value for that property name
-        }
-        queryParameters.push('price= ' + this.state.totalPrice)//to pass this to the query parameter for the totalprice in the contact details orderHandler
-
-        const queryString = queryParameters.join('&')
-
-        this.props.history.push({
-            pathname: '/checkout',
-            search: '?' + queryString //we need to encode the ingredients into this search query
-        })
+    continuePurchaseHandler = () => { //removed query params
+        this.props.history.push('/checkout') //we need to encode the ingredients into this search query
     }
 
     render () {
         let orderSummary = null;
         let food = this.state.error ? <p>Something went wrong!</p> : <Spinner />
-        if(this.state.ingredients) { //we do this to avoid failing of build controls
+        if(this.props.ingres) { //we do this to avoid failing of build controls
             food = (
                 <Fragment>
-                    <Food ingredients={this.state.ingredients}/> {/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
+                    <Food ingredients={this.props.ingres}/> {/*Passing key value pairs of ingredients given. graphical rep of food with ingredients */}
                     <BuildControls
-                        newIngredientAdded = {this.addIngredients}  //Add or remove ingredients 
-                        ingredientRemoved = {this.removeIngredients}
-                        canPurchase = {this.state.canPurchase}
+                        newIngredientAdded = {this.props.onIngredientAdded}  //Add or remove ingredients 
+                        ingredientRemoved = {this.props.onIngredientRemoved}
+                        canPurchase = {this.purchaseState(this.props.ingres)}// we have to execute his whenever it gets re-rendered so as to fetch updated result
                         myOrder = {this.purchaseHandler}
-                        price = {this.state.totalPrice} />
+                        price = {this.props.price} />
                 </Fragment>) 
                 orderSummary = <OrderSummary //we are overriding order summary in the same if statement
-                    ingredients = {this.state.ingredients}
+                    ingredients = {this.props.ingres}
                     purchaseCancelEvent = {this.cancelPurchaseHandler} 
                     purchaseContinueEvent = {this.continuePurchaseHandler}
-                    cost ={this.state.totalPrice}/>
+                    cost ={this.props.price}/>
         }
         if(this.state.loading) { //overriding if loading was set(to overrride summary if needed)
             orderSummary = <Spinner />
@@ -131,4 +83,18 @@ class FoodBuilder extends Component {
     }
 }
 
-export default withErrorHandling(FoodBuilder, axios)
+const mappingStateToProps = state => { //holds a function which recieves state automaticaly and returns an object which defines which property hold which part of state
+    return {
+        ingres: state.ingredients, // to get access to ingredients property in our state. we fetch ingredients from global state
+        price : state.totalPrice
+    }
+}
+
+const mappingDispatchToProps = dispatch => { //here we have 2 dispatchable/triggerable props
+    return {
+        onIngredientAdded: (ingreName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingreName}), //ingredientName is expected to get in this function.it is named as ingreName
+        onIngredientRemoved: (ingreName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingreName})
+    }
+}
+
+export default connect(mappingStateToProps, mappingDispatchToProps)(withErrorHandling(FoodBuilder, axios))//connect sets some props on the component it is wrapping.connected to redux. withErrorHandler call is an argument to the connect
