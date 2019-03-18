@@ -8,11 +8,6 @@
     border: 1px solid whitesmoke;
 }
 
-.Input {
-    display: block;
-    
-}
-
 @media (min-width: 600px) {
     .ContactDetails {
         width: 500px;

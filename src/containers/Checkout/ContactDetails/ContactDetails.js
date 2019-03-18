@@ -3,54 +3,107 @@ import Button from '../../../components/UI/Button/Button'
 import cssClasses from './ContactDetails.module.css'
 import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spinner/Spinner'
-
+import Inputform from '../../../components/UI/Inputform/Inputform'
 
 class ContactDetails extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street:'',
-            county:''
+        orderForm: { //a verbose order form(with 2 way binding) with key-value pairs having some identifiers of different form elements and a js object with configuration setup
+            name : {
+                elementType : 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder:'Your Name'
+                },
+                value: '' //this determines the value shown on the screen
+            },
+            street : {
+                elementType : 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder:'Your Street'
+                },
+                value: ''
+            },
+            county : {
+                elementType : 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder:'Your County'
+                },
+                value: ''
+            },
+            email : {
+                elementType : 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder:'Your Email'
+                },
+                value: ''
+            },
+            deliveryMethod : {
+                elementType : 'select',
+                elementConfig: {
+                    options: [
+                        { value : 'slow', displayValue: "Slow"},
+                        { value : 'fast', displayValue: "Fast"}
+                    ]
+                },
+                value: ''
+            }
         },
         loading: false// we set loading false here and true in orderHandler so that we can show spinner if needed
     }
 
     orderHandler = (event) => {
         event.preventDefault(); // to automatically prevent the default action which is to send the request and reloading the page
-         this.setState({loading: true})
-        const order = {
+        this.setState({loading: true})
+        const formData = {}
+        for (let formElements in this.state.orderForm) { // formElements are email, County and so on
+            formData[formElements] = this.state.orderForm[formElements].value// we set the value of the property to the value user entered
+        }
+            const order = {
             ingredients: this.props.ingredients,
             price : this.props.price,
-            customer : {
-                name : 'Random person',
-                address : {
-                    street: 'random street',
-                    county:'waterford'
-                },
-                email:'test@test.com'
-            },
-            deliveryMethod: 'fast'
+            orderFormData : formData
         }
         axios.post('/orders.json', order)
-             .then(response => {
-                 this.setState({loading: false})
-                 this.props.history.push('/')
-             })
-             .catch(error => {
+            .then(response => {
+                this.setState({loading: false})
+                this.props.history.push('/')
+            })
+            .catch(error => {
                 this.setState({loading: false})
             })
         console.log(this.props.ingredients)
     }
 
+    inputChangeHandler = (event, inputIdentifier) => { // we use inputIdentifier to reach out to the state, get the right object and adjust the value
+        const orderFormUpdate = {...this.state.orderForm}//we need to copy the properties inside the selected orderForm element deeply.
+        const totalFormUpdate={...orderFormUpdate[inputIdentifier]}//inputIdentifier is like email, deliverymethod.and now we clone this object. now we can safely change value of totalFormUpdate as it is a clone
+        totalFormUpdate.value = event.target.value;
+        orderFormUpdate[inputIdentifier] = totalFormUpdate;
+        this.setState({orderForm : orderFormUpdate})
+    }
+
     render() {
+        const formElementArray = [];//we need to convert orderForm into an array to loop through
+        for (let key in this.state.orderForm) {
+            formElementArray.push({
+                id:key,
+                config: this.state.orderForm[key]
+            })
+        }
         let form = ( 
-        <form>
-            <input className={cssClasses.Input} type="text" name="name" placeholder="Your Name" />
-            <input className={cssClasses.Input} type="email" name="email" placeholder="Your Email" />
-            <input className={cssClasses.Input} type="text" name="street" placeholder="Street" />
-            <input className={cssClasses.Input} type="text" name="county" placeholder="County" />
-            <Button buttonType="Positive" clicked={this.orderHandler}>Order</Button>
+        <form onSubmit={this.orderHandler}>
+            {formElementArray.map(formElement => (
+                <Inputform 
+                    key = {formElement.id}
+                    elementType = {formElement.config.elementType}
+                    elementConfig = {formElement.config.elementConfig}
+                    value = {formElement.config.value}
+                    changed = {(event) => this.inputChangeHandler(event, formElement.id)}/> // we change this to anonymous function to pass arguments to the method.we get the event which is created by react automatically.we pass event and formElement identifier(id)
+            ))} {/* we loop through formElementArray with map method to generate a new array*/}
+            <Button buttonType="Positive" >Order</Button>
         </form>)
         if(this.state.loading) {
             form = <Spinner />
