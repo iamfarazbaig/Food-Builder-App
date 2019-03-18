@@ -1,0 +1,36 @@
+.Invalid {
+    border : 1px solid red;
+    background-color: orangered;
+}
+
+.Select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+  }
+
+.Input {
+    width: 100%;
+    /* padding: 12px 20px;
+    margin: 8px 0; */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.InputElement {
+    outline: none;
+    border: 1px solid #ccc;
+    background-color: white;
+    font: inherit;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.InputElement:focus {
+    border: 3px solid rgb(150, 33, 33);
+}

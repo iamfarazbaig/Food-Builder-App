@@ -14,7 +14,11 @@ class ContactDetails extends Component {
                     type: 'text',
                     placeholder:'Your Name'
                 },
-                value: '' //this determines the value shown on the screen
+                value: '', //this determines the value shown on the screen
+                validation :{
+                    required: true
+                },
+                valid: false
             },
             street : {
                 elementType : 'input',
@@ -22,7 +26,11 @@ class ContactDetails extends Component {
                     type: 'text',
                     placeholder:'Your Street'
                 },
-                value: ''
+                value: '',
+                validation :{
+                    required: true
+                },
+                valid: false
             },
             county : {
                 elementType : 'input',
@@ -30,7 +38,13 @@ class ContactDetails extends Component {
                     type: 'text',
                     placeholder:'Your County'
                 },
-                value: ''
+                value: '',
+                validation :{
+                    required: true,
+                    minLength:4,
+                    maxLength: 10
+                },
+                valid: false
             },
             email : {
                 elementType : 'input',
@@ -38,7 +52,11 @@ class ContactDetails extends Component {
                     type: 'text',
                     placeholder:'Your Email'
                 },
-                value: ''
+                value: '',
+                validation :{
+                    required: true
+                },
+                valid: false
             },
             deliveryMethod : {
                 elementType : 'select',
@@ -48,7 +66,9 @@ class ContactDetails extends Component {
                         { value : 'fast', displayValue: "Fast"}
                     ]
                 },
-                value: ''
+                value: 'slow',
+                valid: true,
+                validation :{}
             }
         },
         loading: false// we set loading false here and true in orderHandler so that we can show spinner if needed
@@ -77,11 +97,30 @@ class ContactDetails extends Component {
         console.log(this.props.ingredients)
     }
 
+    checkValidity(value, rules) {
+        let isValid =true;
+        if(rules.required) {
+            isValid = value.trim() !== '' && isValid//value.trim to remove whitespace at beginning or end.if value.trim is not equal to empty string then isValid is true
+        }
+
+        if(rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid
+        }
+
+        if(rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid
+        }
+
+        return isValid
+    }
+
     inputChangeHandler = (event, inputIdentifier) => { // we use inputIdentifier to reach out to the state, get the right object and adjust the value
         const orderFormUpdate = {...this.state.orderForm}//we need to copy the properties inside the selected orderForm element deeply.
         const totalFormUpdate={...orderFormUpdate[inputIdentifier]}//inputIdentifier is like email, deliverymethod.and now we clone this object. now we can safely change value of totalFormUpdate as it is a clone
         totalFormUpdate.value = event.target.value;
+        totalFormUpdate.valid = this.checkValidity(totalFormUpdate.value, totalFormUpdate.validation) //this.checkValidity return boolean which is stored in the valid property
         orderFormUpdate[inputIdentifier] = totalFormUpdate;
+        console.log(totalFormUpdate)
         this.setState({orderForm : orderFormUpdate})
     }
 
@@ -101,6 +140,8 @@ class ContactDetails extends Component {
                     elementType = {formElement.config.elementType}
                     elementConfig = {formElement.config.elementConfig}
                     value = {formElement.config.value}
+                    invalid = {!formElement.config.valid}//we pass an invalid property so "valid" is accessed and then reversed it by !
+                    shouldValidate={formElement.config.validation}
                     changed = {(event) => this.inputChangeHandler(event, formElement.id)}/> // we change this to anonymous function to pass arguments to the method.we get the event which is created by react automatically.we pass event and formElement identifier(id)
             ))} {/* we loop through formElementArray with map method to generate a new array*/}
             <Button buttonType="Positive" >Order</Button>
