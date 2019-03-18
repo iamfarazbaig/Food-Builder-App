@@ -5,10 +5,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom'
 import { Provider} from 'react-redux'
-import {createStore} from 'redux'
-import reducer from './store/reducer'
+import {createStore, applyMiddleware, compose} from 'redux' //compose for dev tools
+import foodBuilderReducer from './store/reducers/foodBuilder'
+import thunk from 'redux-thunk'
 
-const store = createStore(reducer) //pass reducer to createStore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;//compose allows our own set of enhancers and middleware and dev tool is a type of enhancer
+
+const store = createStore(foodBuilderReducer,composeEnhancers(
+    applyMiddleware(thunk)
+)) //pass reducer to createStore.to applyMiddleware we pass thunk
 
 const app = ( 
     <Provider store={store}>{/* we connected the store created by redux with our react app */}

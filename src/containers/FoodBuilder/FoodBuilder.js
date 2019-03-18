@@ -7,7 +7,7 @@ import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandling from '../../hoc/withErrorHandling/withErrorhandling'
 import {connect} from 'react-redux'
-import * as actionTypes from '../../store/actions'
+import * as foodBuilderActions from '../../store/actions/index'
 
 
 class FoodBuilder extends Component {
@@ -92,8 +92,8 @@ const mappingStateToProps = state => { //holds a function which recieves state a
 
 const mappingDispatchToProps = dispatch => { //here we have 2 dispatchable/triggerable props
     return {
-        onIngredientAdded: (ingreName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingreName}), //ingredientName is expected to get in this function.it is named as ingreName
-        onIngredientRemoved: (ingreName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingreName})
+        onIngredientAdded: (ingreName) => dispatch(foodBuilderActions.addIngredient(ingreName)), //ingredientName is expected to get in this function.it is named as ingreName
+        onIngredientRemoved: (ingreName) => dispatch(foodBuilderActions.removeIngredient(ingreName)) // we execute foodBuilderActions, and pass ingredient name here
     }
 }
 
