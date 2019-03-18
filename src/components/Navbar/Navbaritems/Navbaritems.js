@@ -6,6 +6,7 @@ const navigationItems = () => (
     <ul className={cssClasses.NavigationItems}>
         <SingleNavigationItem link="/" exact>Food Builder</SingleNavigationItem> {/* we dont need to set active={true} due to NavLink in react-router-dom */}  
         <SingleNavigationItem link="/orders">Orders</SingleNavigationItem>  
+        <SingleNavigationItem link="/auth">Authentication</SingleNavigationItem>  
     </ul>
 )
 
