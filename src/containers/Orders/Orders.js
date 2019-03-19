@@ -12,8 +12,6 @@ class Orders extends Component {
     }
     
     render () { // we want to render all the orders in this page. so we make Order.js component in the component folder
-        
-        console.log(this.props)
         let orders = <Spinner />
         if(!this.props.loading) {
             orders = this.props.orders.map(order => ( //here we get the individual order to be converted into an order object and key is unique firebase id and ingredients to render individual things and price

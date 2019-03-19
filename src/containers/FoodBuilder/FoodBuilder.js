@@ -16,7 +16,6 @@ class FoodBuilder extends Component {
     }
 
     componentDidMount () {
-        console.log(this.props)
         this.props.onInitialiseIngredients()
     }
 

@@ -1,68 +1,82 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Assignment 1 - ReactJS app.
 
-## Available Scripts
+Name: Farazulla Baig Mohammed
 
-In the project directory, you can run:
+## Overview.
+It is a food builder application wherein you add individual ingredients. As we add the ingredients, it is populated on screen by css styling.
 
-### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+ . . . . . List of user features . . . . 
+ 
+ + Create food using different ingredients
+ + Dynamic price calculation
+ + Protected order list against unauthenticated users
+ + Authenticated and signed up user detail along with form data stored in Realtime DB of Firebase
+ + Custom Form Validation(RegeX Code used)
+ + Firebase app deployment
+ + Custom styled CSS elements.
+ + Orders viewable for logged in users only(obtained from Realtime DataBase)
+ 
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Installation requirements.
 
-### `npm test`
+npm install
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Data Model Design.
 
-### `npm run build`
+Diagram of app's data model (see example below) AND a sample of the test data used .
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![][model1]
+![][model2]
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## App Component Design.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+A screenshot showing the component stories from Storybook  
 
-### `npm run eject`
+![][stories]
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## UI Design.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![][image1] FoodBuilder screen
+![][image2] Orders screen(protected)
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Routing.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
++ / - displays the FoodBuilder
++ /checkout - Checkout component
++ /auth - authentication
++ /orders - shows all orders placed(protected)
++ /logout - logs out of current user
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Independent learning and Extra features implemented
 
-### Analyzing the Bundle Size
+ + Custom CSS Element styling
+ + Added Prop type validation
+ + Used axios
+ + Custom form validation
+ + User sign up and login(details saved on firebase)
+ + React Redux for efficient state management.
+ + Authentication and token management.
+ + Redux middleware (Thunk) for asynchronous tasks
+ 
+ ## Third Party Libraries 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+ + Firebase
+ + prop-types
+ + axios
+ + react-redux
+ + redux-thunk
+ + Semantic-UI-React
+ + Redux Dev Tools
+ + Storybook
 
-### Making a Progressive Web App
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[model1]: ./data.
+[model2]: ./model2.
+[image1]: ./screen1.png
+[image2]: ./screen2.png
+[stories]: ./storybook.png
