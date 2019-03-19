@@ -5,7 +5,7 @@ import cssClasses from './CheckoutComponent.module.css'
 const checkoutComponent = (props) => {
     return (
         <div className={cssClasses.CheckoutComponent}>
-            <h1>all goood!</h1>
+            <h1>all good!</h1>
             <div className={cssClasses.CheckoutFood}>
                 <Food ingredients={props.ingredients}/>
             </div>

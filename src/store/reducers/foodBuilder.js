@@ -38,7 +38,8 @@ const reducer = (state =initialState, action) => { //we set state to initialStat
             return {
                 ...state,
                 ingredients: action.ingredients,//this property is passed from the foodBuilder/actions file
-                error: false// to reset error if it had previously
+                error: false,// to reset error if it had previously
+                totalPrice: 0
             }
         case actionTypes.RETRIEVE_INGREDIENTS_FAIL :
         return {

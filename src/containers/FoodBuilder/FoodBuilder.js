@@ -62,9 +62,6 @@ class FoodBuilder extends Component {
                     purchaseContinueEvent = {this.continuePurchaseHandler}
                     cost ={this.props.price}/>
         }
-        // if(this.state.loading) { //overriding if loading was set(to overrride summary if needed)
-        //     orderSummary = <Spinner />
-        // }
        
         return (
             <Fragment>
