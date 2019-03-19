@@ -1,4 +1,4 @@
-# Assignment 1 - ReactJS app.
+# Assignment 1 - Food Builder App.
 
 Name: Farazulla Baig Mohammed
 
@@ -39,8 +39,10 @@ A screenshot showing the component stories from Storybook
 ## UI Design.
 
 
-![][image1] FoodBuilder screen
-![][image2] Orders screen(protected)
+![][image1] 
+###FoodBuilder screen
+![][image2] 
+###Orders screen(protected)
 
 
 ## Routing.
