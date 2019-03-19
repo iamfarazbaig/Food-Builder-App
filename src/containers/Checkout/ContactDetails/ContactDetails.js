@@ -89,7 +89,7 @@ class ContactDetails extends Component {
             price : this.props.price,
             orderFormData : formData//the detailed order data user entered
         }
-        this.props.onOrderFood(order)//we always recieve dispatch actions here as props
+        this.props.onOrderFood(order, this.props.token)//we always recieve dispatch actions here as props
     }
 
     checkValidity(value, rules) {
@@ -172,13 +172,19 @@ const mappedStateToProps =state => {
     return {
         ingres: state.foodBuilder.ingredients,
         price: state.foodBuilder.totalPrice,
-        loading: state.order.loading//this comes from order in index.js src
+        loading: state.order.loading,//this comes from order in index.js src
+        token: state.auth.token
+
     }
 }
 
 const mappedDispatchToProps = dispatch => { //connect to dispatchable actions
     return {
-        onOrderFood: (orderData) => dispatch(actions.purchasingFood(orderData))
+        onOrderFood: (orderData,token) => {
+            
+            dispatch(actions.purchasingFood(orderData,token))
+        }
+       
 }}
 
 

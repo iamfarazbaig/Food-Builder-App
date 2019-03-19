@@ -2,4 +2,4 @@ export {addIngredient, removeIngredient, initialiseIngredients} from './foodBuil
 
 export {purchasingFood, purchaseInit, fetchOrders} from './order' //we export these to actions folder to trigger it from outside
 
-export {auth} from './auth'
+export {auth,logout} from './auth'
