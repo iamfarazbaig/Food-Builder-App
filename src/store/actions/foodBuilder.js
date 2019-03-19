@@ -16,7 +16,7 @@ export const removeIngredient = (name) => {
     }
 }
 
-export const setTheIngredients = (ingredients) => {
+export const setIngredients = (ingredients) => {
     return {
         type: actionTypes.SET_INGREDIENTS,
         ingredients : ingredients// payload is ingredients.LHS is flexible naming but not RHS
@@ -33,7 +33,7 @@ export const initialiseIngredients = () => {
     return dispatch => { //returning a function where dispatch fn is recieved which can be used in this function body by redux-thunk
         axios.get('https://assignment1-fb.firebaseio.com/ingredients.json')
         .then(response => {
-            dispatch(setTheIngredients(response.data))//data property holds the data 
+            dispatch(setIngredients(response.data))//data property holds the data 
         })
         .catch(error => {
             dispatch(retrieveIngredientsFail())

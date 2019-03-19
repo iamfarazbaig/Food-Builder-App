@@ -20,7 +20,7 @@ export const purchaseFoodStart = (orderData) => { // this is the action dispatch
     return dispatch => { //from redux-thunk
         axios.post('/orders.json', orderData)
             .then(response => {
-                dispatch(foodPurchaseSuccess(response.data))
+                dispatch(foodPurchaseSuccess(response.data,orderData))
             })
             .catch(error => {
                 dispatch(foodPurchaseFail(error))

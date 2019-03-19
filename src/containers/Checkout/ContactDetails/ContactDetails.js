@@ -5,6 +5,8 @@ import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Inputform from '../../../components/UI/Inputform/Inputform'
 import {connect} from 'react-redux'
+import withErrorHandler from '../../../hoc/withErrorHandling/withErrorhandling'
+import * as actions from '../../../store/actions/index'
 
 class ContactDetails extends Component {
     state = {
@@ -78,7 +80,6 @@ class ContactDetails extends Component {
 
     orderHandler = (event) => {
         event.preventDefault(); // to automatically prevent the default action which is to send the request and reloading the page
-        this.setState({loading: true})
         const formData = {}
         for (let formElements in this.state.orderForm) { // formElements are email, County and so on
             formData[formElements] = this.state.orderForm[formElements].value// we set the value of the property to the value user entered
@@ -86,10 +87,9 @@ class ContactDetails extends Component {
             const order = {
             ingredients: this.props.ingres,
             price : this.props.price,
-            orderFormData : formData
+            orderFormData : formData//the detailed order data user entered
         }
-       
-        console.log(this.props.ingredients)
+        this.props.onOrderFood(order)//we always recieve dispatch actions here as props
     }
 
     checkValidity(value, rules) {
@@ -171,4 +171,10 @@ const mappedStateToProps =state => {
     }
 }
 
-export default connect(mappedStateToProps)(ContactDetails)
+const mappedDispatchToProps = dispatch => { //connect to dispatchable actions
+    return {
+        onOrderFood: (orderData) => dispatch(actions.purchaseFoodStart(orderData))
+}}
+
+
+export default connect(mappedStateToProps,mappedDispatchToProps)(withErrorHandler(ContactDetails,axios))

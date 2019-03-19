@@ -11,9 +11,7 @@ import thunk from 'redux-thunk'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;//compose allows our own set of enhancers and middleware and dev tool is a type of enhancer
 
-const store = createStore(foodBuilderReducer,composeEnhancers(
-    applyMiddleware(thunk)
-)) //pass reducer to createStore.to applyMiddleware we pass thunk
+const store = createStore(foodBuilderReducer,composeEnhancers(applyMiddleware(thunk))) //pass reducer to createStore.to applyMiddleware we pass thunk
 
 const app = ( 
     <Provider store={store}>{/* we connected the store created by redux with our react app */}
