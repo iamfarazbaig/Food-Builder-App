@@ -20,7 +20,7 @@ class FoodBuilder extends Component {
         this.props.onInitialiseIngredients()
     }
 
-    purchaseState (ingredients) { //logic for when to update purchase state
+    purchaseStateUpdate (ingredients) { //logic for when to update purchase state
         const sum = Object.keys(ingredients) //creating an array of string entities 
                 .map(iKey => { return ingredients[iKey]}) //using map to replace old value of ingredient with new ones by iKey. we are getting the numbers for ingredients
                 .reduce((sum, el) => {
@@ -33,13 +33,13 @@ class FoodBuilder extends Component {
         this.setState({purchaseMode : true})
     } 
 
-    cancelPurchaseHandler= () => { //to remove order summary box
+    cancelPurchaseHandler = () => { //to remove order summary box
         this.setState({purchaseMode : false})
     } 
 
     continuePurchaseHandler = () => { //removed query params
-        this.props.history.push('/checkout') //we need to encode the ingredients into this search query
         this.props.onInitPurchase()
+        this.props.history.push('/checkout') //we need to encode the ingredients into this search query
     }
 
     render () {
@@ -52,15 +52,16 @@ class FoodBuilder extends Component {
                     <BuildControls
                         newIngredientAdded = {this.props.onIngredientAdded}  //Add or remove ingredients 
                         ingredientRemoved = {this.props.onIngredientRemoved}
-                        canPurchase = {this.purchaseState(this.props.ingres)}// we have to execute his whenever it gets re-rendered so as to fetch updated result
+                        canPurchase = {this.purchaseStateUpdate(this.props.ingres)}// we have to execute his whenever it gets re-rendered so as to fetch updated result
                         myOrder = {this.purchaseHandler}
                         price = {this.props.price} />
-                </Fragment>) 
+                </Fragment>
+            ) 
                 orderSummary = <OrderSummary //we are overriding order summary in the same if statement
                     ingredients = {this.props.ingres}
+                    cost ={this.props.price}
                     purchaseCancelEvent = {this.cancelPurchaseHandler} 
-                    purchaseContinueEvent = {this.continuePurchaseHandler}
-                    cost ={this.props.price}/>
+                    purchaseContinueEvent = {this.continuePurchaseHandler}/>
         }
        
         return (

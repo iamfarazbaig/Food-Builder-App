@@ -66,15 +66,16 @@ class ContactDetails extends Component {
                 elementType : 'select',
                 elementConfig: {
                     options: [
-                        { value : 'slow', displayValue: "Slow"},
-                        { value : 'fast', displayValue: "Fast"}
+                        { value : 'slow', displayValue: 'Slow'},
+                        { value : 'fast', displayValue: 'Fast'}
                     ]
                 },
                 value: 'slow',
                 valid: true,
                 validation :{}
             }
-        }
+        },
+        formIsValid: false
     }
 
     orderHandler = (event) => {
@@ -124,8 +125,12 @@ class ContactDetails extends Component {
         totalFormUpdate.value = event.target.value;
         totalFormUpdate.valid = this.checkValidity(totalFormUpdate.value, totalFormUpdate.validation) //this.checkValidity return boolean which is stored in the valid property
         orderFormUpdate[inputIdentifier] = totalFormUpdate;
-        console.log(totalFormUpdate)
-        this.setState({orderForm : orderFormUpdate})
+
+        let formIsValid = true;
+        for (let inputIdentifier in orderFormUpdate) {
+            formIsValid = orderFormUpdate[inputIdentifier].valid && formIsValid;
+        }
+        this.setState({orderForm : orderFormUpdate, formIsValid: formIsValid})
     }
 
     render() {
@@ -137,19 +142,20 @@ class ContactDetails extends Component {
             })
         }
         let form = ( 
-        <form onSubmit={this.orderHandler}>
-            {formElementArray.map(formElement => (
-                <Inputform 
-                    key = {formElement.id}
-                    elementType = {formElement.config.elementType}
-                    elementConfig = {formElement.config.elementConfig}
-                    value = {formElement.config.value}
-                    invalid = {!formElement.config.valid}//we pass an invalid property so "valid" is accessed and then reversed it by !
-                    shouldValidate={formElement.config.validation}
-                    changed = {(event) => this.inputChangeHandler(event, formElement.id)}/> // we change this to anonymous function to pass arguments to the method.we get the event which is created by react automatically.we pass event and formElement identifier(id)
-            ))} {/* we loop through formElementArray with map method to generate a new array*/}
-            <Button buttonType="Positive" >Order</Button>
-        </form>)
+            <form onSubmit={this.orderHandler}>
+                {formElementArray.map(formElement => (
+                    <Inputform 
+                        key = {formElement.id}
+                        elementType = {formElement.config.elementType}
+                        elementConfig = {formElement.config.elementConfig}
+                        value = {formElement.config.value}
+                        invalid = {!formElement.config.valid}//we pass an invalid property so "valid" is accessed and then reversed it by !
+                        shouldValidate={formElement.config.validation}
+                        changed = {(event) => this.inputChangeHandler(event, formElement.id)}/> // we change this to anonymous function to pass arguments to the method.we get the event which is created by react automatically.we pass event and formElement identifier(id)
+                ))} {/* we loop through formElementArray with map method to generate a new array*/}
+                <Button buttonType="Positive" disabled={!this.state.formIsValid}>Order</Button>
+            </form>
+        )
         if(this.props.loading) {
             form = <Spinner />
         }

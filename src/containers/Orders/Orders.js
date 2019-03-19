@@ -10,6 +10,7 @@ class Orders extends Component {
     componentDidMount() { //we use this to only fetch orders after this is loaded
         this.props.onFetchOrders()
     }
+    
     render () { // we want to render all the orders in this page. so we make Order.js component in the component folder
         let orders = <Spinner />
         if(!this.props.loading) {
