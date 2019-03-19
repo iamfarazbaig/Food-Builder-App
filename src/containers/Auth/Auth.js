@@ -4,6 +4,7 @@ import Button from '../../components/UI/Button/Button'
 import cssClasses from './Auth.module.css'
 import * as actions from '../../store/actions/index'
 import {connect} from 'react-redux'
+import Spinner from '../../components/UI/Spinner/Spinner'
 class Auth extends Component {
     state = {
         controls : { //adopted from contactDetails.js
@@ -93,7 +94,7 @@ class Auth extends Component {
                 config: this.state.controls[key]
             })
         }
-        const form = formElementArray.map(formElement => ( //adopted from contactDetails.js
+        let form = formElementArray.map(formElement => ( //adopted from contactDetails.js
             <Inputform 
                 key={formElement.id}
                 elementType = {formElement.config.elementType}
@@ -104,8 +105,20 @@ class Auth extends Component {
                 changed = {(event) => this.inputChangeHandler(event, formElement.id)}/> // we change this to anonymous function to pass arguments to the method.we get the event which is created by react automatically.we pass event and formElement identifier(id)
        ))
 
+       if(this.props.loading) {
+           form = <Spinner />
+       }
+
+       
+       let errorMessage = null
+
+       if(this.props.error) {
+           errorMessage = <p>{this.props.error.message}</p>// error comes back from firebase thats a js object with message property
+       }
+
         return (
             <div className={cssClasses.Auth}>
+                {errorMessage}
                 <form onSubmit={this.formSubmitHandler}>
                     {form}
                     <Button buttonType="Positive">Submit</Button>
@@ -119,10 +132,17 @@ class Auth extends Component {
     }
 }
 
+const mappingStateToProps = state => { //to have a spinner whilst authenticating
+    return {
+        loading:state.auth.loading, //loading property in auth reducers 
+        error: state.auth.error // we store errors in initialState in auth reducers
+    }
+}
+
 const mappingDispatchToProps = dispatch => { //to be able to dispatch something here via props in this component
     return {
         onAuth: (email, password ,isSignup) => dispatch(actions.auth(email, password, isSignup))
     }
 }
 
-export default connect(null,mappingDispatchToProps)(Auth)
+export default connect(mappingStateToProps,mappingDispatchToProps)(Auth)

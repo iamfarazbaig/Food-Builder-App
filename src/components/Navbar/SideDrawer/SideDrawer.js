@@ -18,7 +18,7 @@ const sideDrawer = (props) => { //to expand and detract side drawer
                 <Logo />
                 </div>
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems isAuthenticated={props.isAuth} />
                 </nav>
         </div>
         </Fragment>

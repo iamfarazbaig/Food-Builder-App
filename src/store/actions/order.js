@@ -24,10 +24,10 @@ export const purchaseFoodStart = () => {
     }
 }
 
-export const purchasingFood = (orderData) => { // this is the action dispatched from the container once order button is clicked. this does the async code part
+export const purchasingFood = (orderData, token) => { // this is the action dispatched from the container once order button is clicked. this does the async code part
     return dispatch => { //from redux-thunk
         dispatch(purchaseFoodStart())//action returned by purchaseFoodStart is dispatched to the store
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth=' + token, orderData)
             .then(response => {
                 console.log(response.data)
                 dispatch(foodPurchaseSuccess(response.data.name,orderData))//we pass response.data as id
@@ -64,10 +64,10 @@ export const fetchOrdersStart = () => {
     }
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => { //we recieve token for auth
     return dispatch => {
         dispatch(fetchOrdersStart())
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
         .then(res => { //after getting the orders(which is a object) we set a state which actually contains all the orders and then outputs them
             const fetchedOrderData = []
             for(let key in res.data) {
