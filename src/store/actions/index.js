@@ -1,3 +1,3 @@
 export {addIngredient, removeIngredient, initialiseIngredients} from './foodBuilder'
 
-export {purchaseFoodStart} from './order'
+export {purchasingFood, purchaseInit} from './order'

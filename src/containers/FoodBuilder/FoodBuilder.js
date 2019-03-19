@@ -7,7 +7,7 @@ import OrderSummary from '../../components/Food/OrderSummary/OrderSummary'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandling from '../../hoc/withErrorHandling/withErrorhandling'
 import {connect} from 'react-redux'
-import * as foodBuilderActions from '../../store/actions/index'
+import * as actions from '../../store/actions/index'
 
 
 class FoodBuilder extends Component {
@@ -39,6 +39,7 @@ class FoodBuilder extends Component {
 
     continuePurchaseHandler = () => { //removed query params
         this.props.history.push('/checkout') //we need to encode the ingredients into this search query
+        this.props.onInitPurchase()
     }
 
     render () {
@@ -78,17 +79,18 @@ class FoodBuilder extends Component {
 
 const mappingStateToProps = state => { //holds a function which recieves state automaticaly and returns an object which defines which property hold which part of state
     return {
-        ingres: state.ingredients, // to get access to ingredients property in our state. we fetch ingredients from global state
-        price : state.totalPrice,
-        error: state.error
+        ingres: state.foodBuilder.ingredients, // to get access to ingredients property in our state. we fetch ingredients from global state
+        price : state.foodBuilder.totalPrice,
+        error: state.foodBuilder.error
     }
 }
 
 const mappingDispatchToProps = dispatch => { //here we have 2 dispatchable/triggerable props
     return {
-        onIngredientAdded: (ingreName) => dispatch(foodBuilderActions.addIngredient(ingreName)), //ingredientName is expected to get in this function.it is named as ingreName
-        onIngredientRemoved: (ingreName) => dispatch(foodBuilderActions.removeIngredient(ingreName)), // we execute foodBuilderActions, and pass ingredient name here
-        onInitialiseIngredients: () => dispatch(foodBuilderActions.initialiseIngredients())
+        onIngredientAdded: (ingreName) => dispatch(actions.addIngredient(ingreName)), //ingredientName is expected to get in this function.it is named as ingreName
+        onIngredientRemoved: (ingreName) => dispatch(actions.removeIngredient(ingreName)), // we execute actions, and pass ingredient name here
+        onInitialiseIngredients: () => dispatch(actions.initialiseIngredients()),
+        onInitPurchase : () => dispatch(actions.purchaseInit())
     }
 }
 

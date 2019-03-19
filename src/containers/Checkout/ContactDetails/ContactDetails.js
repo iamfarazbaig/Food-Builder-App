@@ -74,8 +74,7 @@ class ContactDetails extends Component {
                 valid: true,
                 validation :{}
             }
-        },
-        loading: false// we set loading false here and true in orderHandler so that we can show spinner if needed
+        }
     }
 
     orderHandler = (event) => {
@@ -151,7 +150,7 @@ class ContactDetails extends Component {
             ))} {/* we loop through formElementArray with map method to generate a new array*/}
             <Button buttonType="Positive" >Order</Button>
         </form>)
-        if(this.state.loading) {
+        if(this.props.loading) {
             form = <Spinner />
         }
         return(
@@ -166,14 +165,15 @@ class ContactDetails extends Component {
 
 const mappedStateToProps =state => {
     return {
-        ingres: state.ingredients,
-        price: state.totalPrice
+        ingres: state.foodBuilder.ingredients,
+        price: state.foodBuilder.totalPrice,
+        loading: state.order.loading//this comes from order in index.js src
     }
 }
 
 const mappedDispatchToProps = dispatch => { //connect to dispatchable actions
     return {
-        onOrderFood: (orderData) => dispatch(actions.purchaseFoodStart(orderData))
+        onOrderFood: (orderData) => dispatch(actions.purchasingFood(orderData))
 }}
 
 
