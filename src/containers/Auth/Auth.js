@@ -2,9 +2,11 @@ import React, {Component} from 'react'
 import Inputform from '../../components/UI/Inputform/Inputform'
 import Button from '../../components/UI/Button/Button'
 import cssClasses from './Auth.module.css'
+import * as actions from '../../store/actions/index'
+import {connect} from 'react-redux'
 class Auth extends Component {
     state = {
-        controls : {
+        controls : { //adopted from contactDetails.js
             email : {
                 elementType : 'input',
                 elementConfig: {
@@ -31,7 +33,56 @@ class Auth extends Component {
                 },
                 valid: false
             }
+        }, isSignup: true
+    }
+
+    checkValidity(value, rules) {
+        let isValid =true;
+        if(rules.required) {
+            isValid = value.trim() !== '' && isValid//value.trim to remove whitespace at beginning or end.if value.trim is not equal to empty string then isValid is true
         }
+
+        if(rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid
+        }
+
+        if(rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid
+        }
+
+        if (rules.isEmail) {
+            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //regex code for checking email
+            isValid = pattern.test(value) && isValid
+        }
+
+        if (rules.isNumeric) {
+            const pattern = /^\d+$/;
+            isValid = pattern.test(value) && isValid
+        }
+        return isValid
+    }
+
+    inputChangeHandler = (event, controlName) => {
+        const updatedControls = {
+            ...this.state.controls,//copies all elements inside controls
+            [controlName] : {
+                ...this.state.controls[controlName],
+                value: event.target.value,
+                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation)
+            }
+        }
+        this.setState({controls: updatedControls})
+    }
+
+    formSubmitHandler = (event) => {
+        event.preventDefault() //prevent reloading of page
+        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
+    }
+
+    switchAuthMode = () => {
+        this.setState(prevState => { //setState in function mode to recieve previous state
+            return {isSignup: !prevState.isSignup}
+        })
     }
 
     render ( ) {
@@ -42,7 +93,7 @@ class Auth extends Component {
                 config: this.state.controls[key]
             })
         }
-        const form = formElementArray.map(formElement => (
+        const form = formElementArray.map(formElement => ( //adopted from contactDetails.js
             <Inputform 
                 key={formElement.id}
                 elementType = {formElement.config.elementType}
@@ -55,13 +106,23 @@ class Auth extends Component {
 
         return (
             <div className={cssClasses.Auth}>
-                <form>
+                <form onSubmit={this.formSubmitHandler}>
                     {form}
                     <Button buttonType="Positive">Submit</Button>
                 </form>
+                <Button 
+                    clicked={this.switchAuthMode}
+                    buttonType="Negative">Sign {this.state.isSignup ? 'In' : 'Up'}
+                </Button>
             </div>
         )
     }
 }
 
-export default Auth
+const mappingDispatchToProps = dispatch => { //to be able to dispatch something here via props in this component
+    return {
+        onAuth: (email, password ,isSignup) => dispatch(actions.auth(email, password, isSignup))
+    }
+}
+
+export default connect(null,mappingDispatchToProps)(Auth)

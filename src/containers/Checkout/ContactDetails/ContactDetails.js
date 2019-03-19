@@ -115,7 +115,6 @@ class ContactDetails extends Component {
             const pattern = /^\d+$/;
             isValid = pattern.test(value) && isValid
         }
-
         return isValid
     }
 
