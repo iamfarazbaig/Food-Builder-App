@@ -8,6 +8,14 @@ import { linkTo } from '@storybook/addon-links';
 import button from '../components/UI/Button/Button'
 import toolbar from '../components/Navbar/Toolbar/Toolbar'
 import order from '../components/Order/Order'
+
+import Checkout from '../containers/Checkout/Checkout'
+
+import {BrowserRouter} from 'react-router-dom'
+import {Provider} from 'react-redux'
+import store from '../store/store';
+import logo from '../components/Logo/Logo';
+
 //storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 
 // storiesOf('Button', module)
@@ -35,3 +43,20 @@ const headerData = {
     price : '12'
   }
   storiesOf('Order',module).add('default state', (props)=>(<order {...orderData} />))
+
+
+
+  const withProvider = story => <Provider store={store}>
+    <BrowserRouter>
+      {store()}
+    </BrowserRouter>
+  </Provider>;
+
+
+
+
+
+storiesOf('Checkout', module).addDecorator(withProvider).add('default state',  props => (
+  <div>asd</div>
+))
+ 
