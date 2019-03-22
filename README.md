@@ -77,8 +77,8 @@ A screenshot showing the component stories from Storybook
  + Storybook
 
 
-[model1]: ./data.
-[model2]: ./model2.
+[model1]: ./data.jpg
+[model2]: ./model2.png
 [image1]: ./screen1.png
 [image2]: ./screen2.png
 [stories]: ./storybook.png
