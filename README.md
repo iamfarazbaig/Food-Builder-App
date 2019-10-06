@@ -1,9 +1,7 @@
-# Assignment 1 - Food Builder App.
-
-Name: Farazulla Baig Mohammed
+# Food Builder App.
 
 ## Overview.
-It is a food builder application wherein you add individual ingredients. As we add the ingredients, it is populated on screen by css styling.
+It is a single page web application wherein you add individual ingredients. As we add the ingredients, it is populated on screen by css styling.
 
 
  . . . . . List of user features . . . . 
