@@ -25,6 +25,9 @@ npm install
 Diagram of app's data model (see example below) AND a sample of the test data used .
 
 ![][model1]
+
+Test data from Firebase
+
 ![][model2]
 
 ## App Component Design.
@@ -38,9 +41,12 @@ A screenshot showing the component stories from Storybook
 
 
 ![][image1] 
-###FoodBuilder screen
+
+### FoodBuilder screen
+
 ![][image2] 
-###Orders screen(protected)
+
+### Orders screen(protected)
 
 
 ## Routing.
